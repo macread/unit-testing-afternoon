@@ -3,10 +3,6 @@ const cars = require('./data/cars');
 
 describe('Cart Properties: ', () => {
 
-    afterEach(() => {
-        cart.cart = [];
-        cart.total = 0;
-    })
 
     test('Cart should default to an empty array', () => {
         expect( Array.isArray(cart.cart )).toEqual(true);
@@ -16,8 +12,8 @@ describe('Cart Properties: ', () => {
         expect( cart.cart.length ).toEqual(0);
     })
 
-    test('Total should have a type of integer', () => {
-        expect(cart.total).toBe('number');
+    test('Total should be a number', () => {
+        expect(typeof cart.total).toBe('number');
     })
 
     test('Total should be 0', () => {
@@ -29,6 +25,11 @@ describe('Cart Properties: ', () => {
 
 describe('Cart Methods: ', () => {
 
+    afterEach(() => {
+        cart.cart = [];
+        cart.total = 0;
+    })
+
     test('addToCart() should add a car to the object array', () => {
         //arrange
         //act
@@ -37,11 +38,11 @@ describe('Cart Methods: ', () => {
 
         //assert
         expect(cart.cart.length).toEqual(2);
-        expect(cart.cart.cars[0]).toEqual(cars[0]);
-        expect(cart.cart.cars[1]).toEqual(cars[1]);
+        expect(cart.cart[0]).toEqual(cars[0]);
+        expect(cart.cart[1]).toEqual(cars[1]);
     });
 
-    test('addToCart() should increast the total property', () => {
+    test('addToCart() should increase the total property', () => {
         //arrange
         //act
         cart.addToCart(cars[0]);
@@ -52,9 +53,11 @@ describe('Cart Methods: ', () => {
         expect(cart.total).toEqual(cars[0].price+cars[8].price+cars[2].price);
     });
 
-    test('removeFromCart() should remove a car object fomr the cart array', () => {
+    test('removeFromCart() should remove a car object from the cart array', () => {
         //arrange
-
+        cart.addToCart(cars[0]);
+        cart.addToCart(cars[1]);
+        cart.addToCart(cars[2]);
 
         //act
         cart.removeFromCart(1, cars[1].price)
@@ -76,7 +79,7 @@ describe('Cart Methods: ', () => {
         cart.removeFromCart(1, cars[2].price)
         
         //assert
-        expect(cart.total).toEqual(cars[0].price)
+        expect(cart.total).toEqual(cars[8].price)
     });
 
     test('checkout() should empty the cart array and set the total to 0', () => {
